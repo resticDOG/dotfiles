@@ -18,6 +18,11 @@ local ruled = require("ruled")
 
 beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/theme.lua")
 
+--- Gloabl variables
+DPI = beautiful.xresources.apply_dpi
+MODKEY = "Mod4"
+TERMINAL = "kitty"
+
 --- keybindings, tags, rules, etc
 require("config")
 

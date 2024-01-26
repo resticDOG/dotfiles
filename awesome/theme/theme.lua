@@ -5,29 +5,46 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local rnotification = require("ruled.notification")
+local gears = require("gears")
+local gfs = require("gears.filesystem")
+
 local dpi = xresources.apply_dpi
 
-local gfs = require("gears.filesystem")
+local utils = require("utils")
+local vars = require("config.vars")
 local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font = "MiSans 8"
+--- Icons
+theme.taglist_icon = vars.icons_path .. "tag-inactive.png"
+theme.taglist_icon_selected = vars.icons_path .. "tag-active.png"
+theme.taglist_icon_urgent = vars.icons_path .. "tag-urgent.png"
+
+local main_color = "#25a167"
+
+theme.font_name = "MiSans"
+theme.mono_font_name = "JetBrainsMono Nerd Font"
+theme.font = theme.font_name .. " 8"
+theme.mono_font = theme.mono_font_name .. " 8"
 
 theme.bg_normal = "#223167a0"
 theme.bg_focus = "#ffffff28"
-theme.bg_urgent = "#ff0000"
+theme.bg_urgent = main_color
+theme.accent = main_color
+theme.focus = theme.bg_focus
 theme.bg_minimize = "#444444"
 theme.bg_systray = theme.bg_normal
 
-theme.fg_normal = "#aaaaaa"
+theme.fg_normal = "#f3f3f3"
 theme.fg_focus = "#f3f3f3"
 theme.fg_urgent = "#ffffff"
 theme.fg_minimize = "#ffffff"
 
 theme.useless_gap = dpi(4)
 theme.border_width = dpi(2)
-theme.border_radius = dpi(16)
+theme.border_radius = dpi(5)
+theme.widget_radius = dpi(5)
 theme.client_border_radius = dpi(12)
 theme.widget_radius = theme.border_radius
 theme.border_color_normal = "#000000"
@@ -43,18 +60,34 @@ theme.bg_systray = theme.bg_focus
 -- overriding the default one when
 -- defined, the sets are:
 -- taglist_[bg|fg]_[focus|urgent|occupied|empty|volatile]
--- tasklist_[bg|fg]_[focus|urgent]
+theme.tasklist_fg_normal = "#d3d3d3"
 -- titlebar_[bg|fg]_[normal|focus]
 -- tooltip_[font|opacity|fg_color|bg_color|border_width|border_color]
 -- prompt_[fg|bg|fg_cursor|bg_cursor|font]
 -- hotkeys_[bg|fg|border_width|border_color|shape|opacity|modifiers_fg|label_bg|label_fg|group_margin|font|description_font]
 -- Example:
-theme.taglist_bg_focus = "#ff0000"
+theme.taglist_spacing = dpi(2)
+theme.taglist_shape = utils.rrect(theme.widget_radius)
+theme.taglist_squares_sel = nil
+theme.taglist_squares_unsel = nil
 
--- Generate taglist squares:
-local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
+theme.taglist_bg_focus = theme.bg_focus
+theme.taglist_fg_focus = theme.fg_focus
+
+-- theme.taglist_bg_urgent = theme.uranus .. "B7"
+-- theme.taglist_fg_urgent = theme.wibar_bg
+--
+-- theme.taglist_bg_occupied = theme.wibar_bg
+-- theme.taglist_fg_occupied = theme.xforeground .. "F0"
+--
+-- theme.taglist_bg_empty = theme.black
+-- theme.taglist_fg_empty = theme.xbackground
+
+-- theme.taglist_bg_volatile = theme.jupiter
+
+-- theme.taglist_icon_empty = icon_path .. "taglist/taglist-empty.png"
+-- theme.taglist_icon_urgent = icon_path .. "taglist/taglist-urgent.png"
+-- theme.taglist_icon_home = icon_path .. "taglist/taglist-home.png"
 
 -- Variables set for theming notifications:
 -- notification_font
@@ -68,6 +101,16 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_
 theme.menu_submenu_icon = themes_path .. "default/submenu.png"
 theme.menu_height = dpi(15)
 theme.menu_width = dpi(100)
+
+--- Hotkeys Pop
+theme.hotkeys_bg = "#3e3e3eF0"
+theme.hotkeys_fg = "#ffffff"
+theme.hotkeys_border_color = theme.bg_focus
+theme.hotkeys_border_width = theme.border_width
+theme.hotkeys_modifiers_fg = main_color
+theme.hotkeys_font = theme.mono_font_name .. " 10"
+theme.hotkeys_description_font = theme.mono_font_name .. " 9"
+theme.hotkeys_group_margin = dpi(10)
 
 -- You can add as many variables as
 -- you wish and access them by using
