@@ -1,7 +1,7 @@
 # Helpers are user-defined functions that can be executed inside templates.
 # This section is optional.
 [helpers]
-color_hex2rgb = "dotter_settings/helpers/color_hex2rgb.rhai"
+# color_hex2rgb = "dotter_settings/helpers/color_hex2rgb.rhai"
 
 # A package contains two sections - "files" and "variables".
 # Both of those sections are optional - you can have only one if you want.
@@ -23,6 +23,9 @@ color_hex2rgb = "dotter_settings/helpers/color_hex2rgb.rhai"
 # and is used by the Handlebars templating engine as the rendering context.
 [zsh.variables]
 prompt_color = "#00FF00"
+
+[tmux.files]
+"tmux.conf" = "~/.tmux.conf"
 
 # A package for all files relating to the i3 window manager
 # I would only select it if I had i3 installed,
