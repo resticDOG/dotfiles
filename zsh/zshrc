@@ -4,12 +4,19 @@
 # set proxy
 # WSL based settins
 if [[ -n $WSL_DISTRO_NAME ]]; then
+  # wsl enviroments
   export HOST_IP=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
   export HTTP_PROXY="http://$HOST_IP:10815"
   export HTTPS_PROXY=$HTTP_PROXY
   export https_proxy=$HTTP_PROXY
   export http_proxy=$HTTP_PROXY
   export NO_PROXY="localhost,127.0.0.1"
+
+  # wsl alias
+  alias vim='/home/linkzz/apps/nvim.appimage'
+  alias vi=vim
+  alias nvim=vim
+  alias open="powershell.exe -c start"
 fi
 export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
 export PATH="$PATH:$JAVA_HOME/bin:$HOME/.local/bin"
@@ -110,7 +117,6 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # name ()
-alias open="powershell.exe -c start"
 open-git-merge ()
 {
   local branch=$(git branch | grep '*' | awk '{print $2}')
@@ -121,9 +127,6 @@ open-git-merge ()
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vim='/home/linkzz/apps/nvim.appimage'
-alias vi=vim
-alias nvim=vim
 alias s='git status'
 alias bc='git checkout -b'
 alias aa='git add .'
