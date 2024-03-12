@@ -1,0 +1,52 @@
+# Helpers are user-defined functions that can be executed inside templates.
+# This section is optional.
+[helpers]
+color_hex2rgb = "dotter_settings/helpers/color_hex2rgb.rhai"
+
+# A package contains two sections - "files" and "variables".
+# Both of those sections are optional - you can have only one if you want.
+
+# The 'files' section is a mapping between the path of the file relative to
+# the repository root and its location in the filesystem (where the program
+# expects it)
+# In this case, say your repository is at `~/.dotfiles`, it will map
+# `~/.dotfiles/zsh/zprofile` to `~/.zprofile`,
+# and `~/.dotfiles/zshrc` to `~/.zshrc`
+# To clarify, folders in the repository don't have to correspond to packages.
+# On Windows, '~' is expanded to 'C:\Users\<USERNAME>\'
+[zsh.files]
+"zsh/zshenv" = "~/.zprofile"
+"zsh/zshrc" = "~/.zshrc"
+
+# The 'variables' section contains constants that the templated files
+# can access. This section can contain all the types that toml supports,
+# and is used by the Handlebars templating engine as the rendering context.
+[zsh.variables]
+prompt_color = "#00FF00"
+
+# A package for all files relating to the i3 window manager
+# I would only select it if I had i3 installed,
+# so for example, I wouldn't select it on my VPS since it has no screen.
+
+# The `depends` field means that when this package is enabled, all of the
+# depended packages will be recursively enabled as well.
+# As you can see, I also left a comment that I need to configure certain
+# machine-specific variables if I want to use this package.
+
+# Note that variables from a selected package are available to all others.
+# [i3]
+# depends = ["graphics"]
+#
+# [i3.files]
+# Xinitrc = "~/.xinitrc"
+# i3 = "~/.i3/config"
+# polybar = "~/.config/polybar/config"
+# # Local variables: network_interface, screen_size, terminal
+#
+# # A variables-only package, maybe it contains variables that are also
+# # used by my terminal so I want them to exist when I select either of
+# # the packages, without having to repeat them.
+# [graphics.variables]
+# font_size = 14
+# primary_color = "#CCCCCC"
+# background_color = "#333333"
