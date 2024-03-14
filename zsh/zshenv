@@ -1,1 +1,4 @@
-. "$HOME/.cargo/env"
+if [[ -n $WSL_DISTRO_NAME ]]; then
+  . "$HOME/.cargo/env"
+fi
+
