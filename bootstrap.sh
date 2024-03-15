@@ -3,17 +3,52 @@
 set -e
 
 # declare colors
+WHITE='\033[0;37m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RED='\033[0;31m'
 
+log_text() {
+  case $1 in 
+    info)
+      echo -e "$WHITE$2$WHITE"
+      ;;
+    success)
+      echo -e "$GREEN$2$GREEN"
+      ;;
+    error)
+      echo -e "$RED$2$RED" 
+      ;;
+  esac
+}
+
 info() {
-  echo -e "$GREEN$(date +"%F %T") - INFO: $1$GREEN" >&2
+  echo -e "$(log_text "info" "$1")"
+}
+
+success() {
+  echo -e "$(log_text "success" "$1")"
 }
 
 error() {
-  echo -e "$RED$(date +"%F %T") - ERROR: $1$RED" >&2
+  echo -e "$(log_text "error" "$1")"
   exit 1
+}
+
+ask() {
+  while true; do
+    read -p "$(log_text "info" "$1")" answer
+    case $answer in
+      [Yy]* ) 
+        $2
+        break
+        ;;
+      [Nn]* ) 
+        break
+        ;;
+      * ) echo "Please answer yes or no.";;
+    esac
+  done
 }
 
 # 定义包管理器和要安装的软件包列表
@@ -56,7 +91,7 @@ install_oh_my_zsh() {
         # 安装zsh-autosuggestions
         info "Installing zsh-autosuggestions..."
         git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-        sed -i 's/^plugins=(\(.*\))$/plugins=(\1 zsh-autosuggestions)/' $HOME/.zshrc
+      
     fi
 }
 
@@ -89,6 +124,7 @@ EOF
       info "Installing python3 version: $latest"
       pyenv install $latest
       pyenv global $latest
+      rm $HOME/.bashrc >&2
     fi
 }
 
@@ -102,15 +138,27 @@ install_packages() {
     fi
 }
 
+# 创建 dotter local 配置文件并初始化
+init_dotter() {
+  if [[ ! -f ".dotter/local.toml" ]]; then
+    info "Apply dotter config"
+    cat > ".dotter/local.yaml" << 'EOF'
+packages = ["bash", "zsh", "tmux", "nvim"]
+EOF
+    ./dotter deploy
+  fi
+}
+
 
 # 主函数
 main() {
     get_distro
-    install_packages
-    install_oh_my_zsh
-    install_nvm_node
-    install_python3
-    info "All done. Enjoy your new shell!"
+    ask "It's a freash install (y/n)？" install_packages
+    ask "It's ok to install Oh-my-zsh (y/n)？" install_oh_my_zsh
+    ask "It's ok to install Nodejs (y/n)？" install_nvm_node
+    ask "It's ok to install Python3 (y/n)？" install_python3
+    init_dotter
+    success "All done. Enjoy your new shell!"
 }
 
 main
