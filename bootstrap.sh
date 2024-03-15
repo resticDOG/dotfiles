@@ -150,7 +150,7 @@ install_packages() {
 init_dotter() {
   if [[ ! -f ".dotter/local.toml" ]]; then
     info "Apply dotter config"
-    cat > ".dotter/local.yaml" << 'EOF'
+    cat > ".dotter/local.toml" << 'EOF'
 packages = ["bash", "zsh", "tmux", "nvim"]
 EOF
     ./dotter deploy
