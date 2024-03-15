@@ -27,6 +27,12 @@ prompt_color = "#00FF00"
 [tmux.files]
 "tmux.conf" = "~/.tmux.conf"
 
+[nvim.files]
+"nvim/nvchad" = "~/.config/nvim"
+"nvim/ftplugin" = "~/.config/nvim/ftplugin"
+"nvim/lua/custom" = "~/.config/nvim/lua/custom"
+
+
 # A package for all files relating to the i3 window manager
 # I would only select it if I had i3 installed,
 # so for example, I wouldn't select it on my VPS since it has no screen.
