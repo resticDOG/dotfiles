@@ -86,17 +86,22 @@ install_oh_my_zsh() {
     # 通过判断oh-my-zsh的安装目录判断是否安装了oh-my-zsh
     if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
         info "Installing oh-my-zsh..."
+        export RUNZSH=no
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
         source $HOME/.zshrc
         # 安装zsh-autosuggestions
         info "Installing zsh-autosuggestions..."
         git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-      
+    else
+      info "oh-my-zsh already installed. skipping..."
     fi
 }
 
 # 安装 nvm 并安装node最新版本
 install_nvm_node() {
+  if [[ -c "$(command -v node)" ]]; then
+    info "node already installed. skipping..."
+  fi
   if [[ ! -d $HOME/.nvm ]]; then
     local nvm_version=$(curl -L -s https://api.github.com/repos/nvm-sh/nvm/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
     info "Installing nvm..."
@@ -111,28 +116,31 @@ install_nvm_node() {
 
 # 安装 python3 和 pip
 install_python3() {
-    if [[ ! -d $HOME/.pyenv ]]; then
-      info "Installing pyenv..."
-      sh -c "$(curl -fsSL https://pyenv.run)"
-      cat >> $HOME/.bashrc << 'EOF'
+  if [[ -c "$(command -v python3)" ]]; then
+    info "python3 already installed. skipping..."
+  fi
+  if [[ ! -d $HOME/.pyenv ]]; then
+    info "Installing pyenv..."
+    sh -c "$(curl -fsSL https://pyenv.run)"
+    cat >> $HOME/.bashrc << 'EOF'
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 EOF
-      source $HOME/.bashrc >&2
-      local latest=$(pyenv install -l | grep -e '^\s*3\.[0-9]*\.[0-9]*$' | tail -1)
-      info "Installing python3 version: $latest"
-      pyenv install $latest
-      pyenv global $latest
-      rm $HOME/.bashrc >&2
-    fi
+    source $HOME/.bashrc >&2
+    local latest=$(pyenv install -l | grep -e '^\s*3\.[0-9]*\.[0-9]*$' | tail -1)
+    info "Installing python3 version: $latest"
+    pyenv install $latest
+    pyenv global $latest
+    rm $HOME/.bashrc >&2
+  fi
 }
 
 # 安装软件包
 install_packages() {
     if [ -n "${PKG_MANAGERS[$DISTRO]}" ]; then
         info "Installing packages for $DISTRO: $PACKAGES"
-        sudo ${PKG_MANAGERS[$DISTRO]} $PACKAGES >&2
+        sudo ${PKG_MANAGERS[$DISTRO]} --noconfirm $PACKAGES >&2
     else
         error "Unsupported distribution: $DISTRO" >&2
     fi
@@ -157,8 +165,10 @@ main() {
     ask "It's ok to install Oh-my-zsh (y/n)？" install_oh_my_zsh
     ask "It's ok to install Nodejs (y/n)？" install_nvm_node
     ask "It's ok to install Python3 (y/n)？" install_python3
-    init_dotter
+    ask "Create dotter local config file and deploy it (y/n)？" init_dotter
     success "All done. Enjoy your new shell!"
+    success "If you want to customize it, please modify the \".dotter/local.toml\" file, then deploy it again."
+    success "If you want to know more about, please visit https://github.com/resticDOG/dotfiles"
 }
 
 main
