@@ -32,6 +32,8 @@ prompt_color = "#00FF00"
 "nvim/ftplugin" = "~/.config/nvim/ftplugin"
 "nvim/lua/custom" = "~/.config/nvim/lua/custom"
 
+[bash.files]
+bashrc = "~/.bashrc"
 
 # A package for all files relating to the i3 window manager
 # I would only select it if I had i3 installed,
