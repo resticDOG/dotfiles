@@ -153,7 +153,7 @@ init_dotter() {
     cat > ".dotter/local.toml" << 'EOF'
 packages = ["bash", "zsh", "tmux", "nvim"]
 EOF
-    ./dotter deploy
+    ./dotter deploy --force
   fi
 }
 
