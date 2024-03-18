@@ -37,7 +37,7 @@ error() {
 
 ask() {
   while true; do
-    read -p "$(log_text "info" "$1")" answer
+    read -p "$(success "$1")" answer
     case $answer in
       [Yy]* ) 
         $2
@@ -86,9 +86,7 @@ install_oh_my_zsh() {
     # 通过判断oh-my-zsh的安装目录判断是否安装了oh-my-zsh
     if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
         info "Installing oh-my-zsh..."
-        export RUNZSH=no
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-        source $HOME/.zshrc
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         # 安装zsh-autosuggestions
         info "Installing zsh-autosuggestions..."
         git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
