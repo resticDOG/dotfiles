@@ -1,9 +1,11 @@
 local awful = require("awful")
 local wibox = require("wibox")
-local gears = require("gears")
 
 -- custom widgets
 local taglist = require("ui.bar.taglist")
+local tasklist = require("ui.bar.tasklist")
+local avatar = require("ui.bar.avatar")
+local systray = require("ui.bar.systray")
 
 return function(s)
   -- Create a promptbox for each screen
@@ -29,25 +31,7 @@ return function(s)
     },
   })
 
-  -- Create a tasklist widget
-  s.mytasklist = awful.widget.tasklist({
-    screen = s,
-    filter = awful.widget.tasklist.filter.currenttags,
-    buttons = {
-      awful.button({}, 1, function(c)
-        c:activate({ context = "tasklist", action = "toggle_minimization" })
-      end),
-      awful.button({}, 3, function()
-        awful.menu.client_list({ theme = { width = 250 } })
-      end),
-      awful.button({}, 4, function()
-        awful.client.focus.byidx(-1)
-      end),
-      awful.button({}, 5, function()
-        awful.client.focus.byidx(1)
-      end),
-    },
-  })
+  s.mytasklist = tasklist(s)
 
   -- Create the wibox
   return awful.wibar({
@@ -65,8 +49,15 @@ return function(s)
       { -- Right widgets
         layout = wibox.layout.fixed.horizontal,
         mykeyboardlayout,
-        wibox.widget.systray(),
+        {
+
+          layout = wibox.layout.align.horizontal,
+          systray(),
+          margins = DPI(20),
+          widget = wibox.container.margin,
+        },
         mytextclock,
+        avatar,
         s.mylayoutbox,
       },
     },

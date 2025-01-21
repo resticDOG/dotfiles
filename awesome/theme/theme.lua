@@ -41,20 +41,21 @@ theme.fg_focus = "#f3f3f3"
 theme.fg_urgent = "#ffffff"
 theme.fg_minimize = "#ffffff"
 
-theme.useless_gap = dpi(4)
-theme.border_width = dpi(2)
+theme.useless_gap = dpi(2)
+theme.border_width = dpi(1)
 theme.border_radius = dpi(5)
 theme.widget_radius = dpi(5)
-theme.client_border_radius = dpi(12)
+theme.client_border_radius = dpi(20)
 theme.widget_radius = theme.border_radius
 theme.border_color_normal = "#000000"
 theme.border_color_active = "#535d6c"
 theme.border_color_marked = "#91231c"
 
 -- Systray
-theme.systray_icon_spacing = dpi(4)
-theme.systray_max_rows = 1
-theme.bg_systray = theme.bg_focus
+-- theme.systray_icon_spacing = dpi(4)
+theme.systray_icon_size = dpi(4)
+-- theme.systray_max_rows = 1
+-- theme.bg_systray = theme.bg_focus
 
 -- There are other variable sets
 -- overriding the default one when

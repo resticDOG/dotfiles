@@ -14,7 +14,8 @@ local M = {
   --- Default apps
   terminal = "kitty",
   file_manager = "thunar",
-  browser = "microsoft-edge-stable",
+  -- browser = "microsoft-edge-stable",
+  browser = "google-chrome-stable",
   editor = "nvim",
 
   wallpaper = icons_path .. "../wallpapers/dark.png",

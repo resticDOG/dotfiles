@@ -221,6 +221,6 @@ end)
 
 -- sample debug message notification
 naughty.notification({
-  title = "OK",
-  text = "End of line",
+  title = "Load config success",
+  text = "👌",
 })

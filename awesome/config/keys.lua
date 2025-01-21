@@ -5,17 +5,18 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local vars = require("config.vars")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
 -- Default terminal
-local terminal = "kitty"
+local terminal = vars.terminal or "kitty"
 local editor = os.getenv("EDITOR") or "nano"
 local editor_cmd = terminal .. " -e " .. editor
 
 -- Default browser
-local browser = "microsoft-edge-stable"
+local browser = vars.browser or "microsoft-edge-stable"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
