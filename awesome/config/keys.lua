@@ -19,11 +19,9 @@ local editor_cmd = terminal .. " -e " .. editor
 local browser = vars.browser or "microsoft-edge-stable"
 
 -- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
-local modkey = "Mod4"
+-- Usually, Mod1 is the Alt key.
+-- You have remapped the modkey to Mod1.
+local modkey = vars.modkey or "Mod1"
 local myawesomemenu = {
   {
     "hotkeys",
@@ -92,10 +90,10 @@ awful.keyboard.append_global_keybindings({
     awful.spawn.with_shell(browser)
   end, { description = "open browser", group = "launcher" }),
 })
-
 -- Tags related keybindings
 awful.keyboard.append_global_keybindings({
   awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
+...
   awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "tag" }),
   awful.key({ modkey }, "Tab", awful.tag.history.restore, { description = "go back", group = "tag" }),
 })

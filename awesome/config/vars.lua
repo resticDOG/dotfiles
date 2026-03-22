@@ -9,7 +9,7 @@ local M = {
   avatar = icons_path .. "avatar.png",
 
   --- Modkey
-  modkey = "Mod4",
+  modkey = "Mod1",
 
   --- Default apps
   terminal = "kitty",
