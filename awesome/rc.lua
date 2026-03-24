@@ -41,11 +41,10 @@ end)
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 
--- {{{ Tag layout
 -- Table of layouts to cover with awful.layout.inc, order matters.
 tag.connect_signal("request::default_layouts", function()
   awful.layout.append_default_layouts({
-    awful.layout.suit.floating,
+    -- awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
@@ -54,13 +53,12 @@ tag.connect_signal("request::default_layouts", function()
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.max,
+    -- awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
   })
 end)
--- }}}
 
 -- {{{ Wallpaper
 screen.connect_signal("request::wallpaper", function(s)
@@ -84,11 +82,11 @@ end)
 
 -- {{{ Wibar
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-
--- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+-- -- Keyboard map indicator and switcher
+-- mykeyboardlayout = awful.widget.keyboardlayout()
+--
+-- -- Create a textclock widget
+-- mytextclock = wibox.widget.textclock()
 
 --- ui
 require("ui")
@@ -155,9 +153,7 @@ ruled.client.connect_signal("request::rules", function()
 end)
 -- }}}
 
--- {{{ Titlebars
--- Add a titlebar if titlebars_enabled is set to true in the rules.
-client.connect_signal("request::titlebars", function(c)
+ruled.client.connect_signal("request::titlebars", function(c)
   -- buttons for the titlebar
   local buttons = {
     awful.button({}, 1, function()
@@ -215,7 +211,7 @@ end)
 -- }}}
 
 -- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
+ruled.client.connect_signal("mouse::enter", function(c)
   c:activate({ context = "mouse_enter", raise = false })
 end)
 
@@ -224,34 +220,3 @@ naughty.notification({
   title = "Load config success",
   text = "👌",
 })
-
--- {{{ Autostart
-local function run_once(cmd)
-  local findme = cmd
-  local firstspace = cmd:find(" ")
-  if firstspace then
-    findme = cmd:sub(1, firstspace - 1)
-  end
-  awful.spawn.with_shell(string.format("pgrep -u $USER -x %s > /dev/null || (%s)", findme, cmd))
-end
-
--- 1. 将 Caps Lock 改为 Ctrl (长按) 和 Esc (短按) 是一种流行方案，但这里我们只做 Caps -> Esc
--- 我们先把 Caps 改为另外一个不会冲突的键（如 F13），然后用 xcape 将其短按映射为 Esc。
--- 或者简单点：
-awful.spawn.with_shell("setxkbmap -option caps:escape")
-
--- 2. 监听 Esc 键切换输入法但“不拦截”它的最佳方式是在命令行中使用脚本或在 Awesome 中使用信号
--- 这里我们使用一种“非拦截式”监听：当窗口焦点改变时，或定时检测。
--- 但针对你的需求，最稳妥的是在 rc.lua 中加入一个简单的信号监听，仅在切换窗口时重置：
-client.connect_signal("focus", function()
-    awful.spawn.with_shell("fcitx5-remote -c")
-end)
-
--- 如果你一定要按下 Esc 键立即切换，建议使用这个简单的后台循环脚本：
-awful.spawn.with_shell([[
-  while true; do
-    # 监听 Escape 键释放事件
-    xev -root -event keyboard | grep -o "keycode 9 (keysym 0xff1b, Escape)" && fcitx5-remote -c
-  done
-]], false) -- 这里只是思路，实际上 xev 比较占资源，下面我们换成更轻量的 xkbset 或直接在 Awesome 里做
--- }}}

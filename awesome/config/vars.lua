@@ -12,7 +12,8 @@ local M = {
   modkey = "Mod1",
 
   --- Default apps
-  terminal = "kitty",
+  -- terminal = "kitty",
+  terminal = "ghostty",
   file_manager = "thunar",
   -- browser = "microsoft-edge-stable",
   browser = "google-chrome-stable",

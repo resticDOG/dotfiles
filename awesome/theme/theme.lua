@@ -176,7 +176,7 @@ theme.icon_theme = nil
 rnotification.connect_signal("request::rules", function()
   rnotification.append_rule({
     rule = { urgency = "critical" },
-    properties = { bg = "#ff0000", fg = "#ffffff" },
+    properties = { bg = "#333", fg = "#ffffff" },
   })
 end)
 

@@ -15,7 +15,7 @@ local avatar = wibox.widget({
 })
 
 -- 调整头像大小
-avatar.width = DPI(40)
-avatar.height = DPI(40)
+avatar.width = DPI(30)
+avatar.height = DPI(30)
 
 return avatar

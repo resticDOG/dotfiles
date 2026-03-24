@@ -3,7 +3,6 @@
 local naughty = require("naughty")
 local awful = require("awful")
 local beautiful = require("beautiful")
-local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local vars = require("config.vars")
 -- Enable hotkeys help widget for VIM and other apps
@@ -12,11 +11,11 @@ require("awful.hotkeys_popup.keys")
 
 -- Default terminal
 local terminal = vars.terminal or "kitty"
-local editor = os.getenv("EDITOR") or "nano"
+local editor = os.getenv("EDITOR") or "vim"
 local editor_cmd = terminal .. " -e " .. editor
 
 -- Default browser
-local browser = vars.browser or "microsoft-edge-stable"
+local browser = vars.browser or "google-chrome-stable"
 
 -- Default modkey.
 -- Usually, Mod1 is the Alt key.
@@ -32,12 +31,6 @@ local myawesomemenu = {
   { "manual", terminal .. " -e man awesome" },
   { "edit config", editor_cmd .. " " .. awesome.conffile },
   { "restart", awesome.restart },
-  {
-    "quit",
-    function()
-      awesome.quit()
-    end,
-  },
 }
 
 local mymainmenu = awful.menu({
@@ -48,8 +41,6 @@ local mymainmenu = awful.menu({
   },
 })
 
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- {{{ Mouse bindings
 awful.mouse.append_global_mousebindings({
   awful.button({}, 3, function()
@@ -83,9 +74,6 @@ awful.keyboard.append_global_keybindings({
   awful.key({ modkey }, "r", function()
     awful.spawn.with_shell("rofi -show drun")
   end, { description = "applications launcher", group = "launcher" }),
-  awful.key({ modkey }, "p", function()
-    menubar.show()
-  end, { description = "show the menubar", group = "launcher" }),
   awful.key({ modkey }, "b", function()
     awful.spawn.with_shell(browser)
   end, { description = "open browser", group = "launcher" }),
@@ -93,18 +81,17 @@ awful.keyboard.append_global_keybindings({
 -- Tags related keybindings
 awful.keyboard.append_global_keybindings({
   awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
-...
   awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "tag" }),
   awful.key({ modkey }, "Tab", awful.tag.history.restore, { description = "go back", group = "tag" }),
 })
 
 -- }}}
 awful.keyboard.append_global_keybindings({
-  awful.key({ modkey }, "j", function()
-    awful.client.focus.byidx(1)
-  end, { description = "focus next by index", group = "client" }),
-  awful.key({ modkey }, "k", function()
+  awful.key({ modkey }, "h", function()
     awful.client.focus.byidx(-1)
+  end, { description = "focus next by index", group = "client" }),
+  awful.key({ modkey }, "l", function()
+    awful.client.focus.byidx(1)
   end, { description = "focus previous by index", group = "client" }),
   awful.key({ modkey }, "a", function()
     awful.client.focus.history.previous()
@@ -136,18 +123,12 @@ awful.keyboard.append_global_keybindings({
     awful.client.swap.byidx(-1)
   end, { description = "swap with previous client by index", group = "client" }),
   awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
-  awful.key({ modkey }, "i", function()
+  awful.key({ modkey, "Shift" }, "l", function()
     awful.tag.incmwfact(0.05)
   end, { description = "increase master width factor", group = "layout" }),
-  awful.key({ modkey }, "h", function()
+  awful.key({ modkey, "Shift" }, "h", function()
     awful.tag.incmwfact(-0.05)
   end, { description = "decrease master width factor", group = "layout" }),
-  awful.key({ modkey, "Shift" }, "h", function()
-    awful.tag.incnmaster(1, nil, true)
-  end, { description = "increase the number of master clients", group = "layout" }),
-  awful.key({ modkey, "Shift" }, "l", function()
-    awful.tag.incnmaster(-1, nil, true)
-  end, { description = "decrease the number of master clients", group = "layout" }),
   awful.key({ modkey, "Control" }, "h", function()
     awful.tag.incncol(1, nil, true)
   end, { description = "increase the number of columns", group = "layout" }),
